@@ -65,9 +65,8 @@
             passarinho.sobe = true
             passarinho.setFlip(false, false)
         }
-        
-// nesse caso, um loop while foi implementado por pedido do professor no exercício, mas como se trata de um while, não seria interessante aplicar essa estrutura dentro da função update do phaser, já que ele pode forçar algum comportamento no código e impedir que o restante do jogo continue
-        while (passarinho.ida === true && passarinho.sobe === true) {
+
+        if (passarinho.ida === true && passarinho.sobe === true) {
             if (passarinho.x < 700 && passarinho.y > 100) {
                 passarinho.x += 5
                 passarinho.y -= 2
@@ -77,9 +76,7 @@
                 passarinho.sobe = false
                 passarinho.setFlip(true, false)
             }
-        }
-        
-        while (passarinho.ida === false && passarinho.sobe === false) {
+        } else if (passarinho.ida === false && passarinho.sobe === false) {
             if (passarinho.x > 100 && passarinho.y < 300) {
                 passarinho.x -= 5
                 passarinho.y += 2
