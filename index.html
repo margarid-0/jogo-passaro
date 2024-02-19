@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script>
+    <title>Exercício do Pássaro</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<script>
+
+// configuração inicial do jogo
+    var config = {
+        type: Phaser.AUTO,
+        width: 800,
+        height: 600,
+
+        scene: {
+            preload: preload,
+            create: create,
+            update: update
+        }
+    };
+
+// configuração da cena inicial do jogo e declaração da variável    
+    var game = new Phaser.Game(config);
+    var passarinho
+
+// função preload do phaser3 para o carregamento dos assets utilizados
+    function preload() {
+        this.load.image('bg', 'assets/bg_space.png');
+        this.load.spritesheet('bird', 'assets/bird-red.png', { frameWidth: 75, frameHeight: 75 })
+    }
+
+// função create do phaser3 para atribuição de propriedades a elementos carregados na função anterior e definição de propriedades para que a sprite do pássaro seja lida corretamente para parecer uma animação
+    function create() {
+        this.add.image(400, 300, 'bg').setScale(1.2);
+        passarinho = this.add.sprite(100, 300, 'bird').setScale(1.3)
+
+        this.anims.create({
+            key: 'fly',
+            frames: this.anims.generateFrameNumbers('bird', { start: 0, end: 7 }),
+            frameRate: 10,
+            repeat: -1
+        })
+
+        passarinho.anims.play('fly', true)
+    }
+
+
+// função update do phaser3 para atribuição de características de atualização recorrente. No caso, os movimentos do pássaro de acordo o cumprimento das condições impostas no código para que ele possa seguir num looping
+    function update() {
+        if (passarinho.x == 100 && passarinho.y == 300) {
+            passarinho.ida = true
+            passarinho.sobe = true
+            passarinho.setFlip(false, false)
+        }
+        
+// nesse caso, um loop while foi implementado por pedido do professor no exercício, mas como se trata de um while, não seria interessante aplicar essa estrutura dentro da função update do phaser, já que ele pode forçar algum comportamento no código e impedir que o restante do jogo continue
+        while (passarinho.ida === true && passarinho.sobe === true) {
+            if (passarinho.x < 700 && passarinho.y > 100) {
+                passarinho.x += 5
+                passarinho.y -= 2
+                console.log('aqui, se a posição horizontal for menor que 700 e a posição vertical for maior que 100, o pássaro se move de 5 em 5 pixels da esquerda para a direita e de 2 em 2 pixels para cima')
+            } else {
+                passarinho.ida = false
+                passarinho.sobe = false
+                passarinho.setFlip(true, false)
+            }
+        }
+        
+        while (passarinho.ida === false && passarinho.sobe === false) {
+            if (passarinho.x > 100 && passarinho.y < 300) {
+                passarinho.x -= 5
+                passarinho.y += 2
+                console.log('já nesse caso, o movimento é invertido e o pássaro passa a voltar da direita para a esquerda e descer após ter chegado nos pontos 700 horizontal e 500 vertical, agora o pássaro repete esse movimento enquanto sua posição horizontal for maior que 100 e sua posição vertical for menor que em 500')
+            } else {
+                passarinho.ida = true
+                passarinho.sobe = true
+            }
+        }
+
+
+        
+
+
+    }
+
+</script>
+
+</body>
+</html>
+
+
